@@ -1,8 +1,8 @@
 #pragma once
 //--
-#include <CommCtrl.h>
-#include <windows.h>
 #include <tchar.h>
+#include <windows.h>
+#include <CommCtrl.h>
 //--
 #include <locale.h>
 //--
@@ -14,11 +14,11 @@
 //--
 struct myData
 {
-	int     length;
-	int    *n, *x, *EV, *a /* length + 1 */;
+	int     length, *n;
 	int     min_n, max_n;
 	double  min_x, max_x;
-
+	double  *x, *EV, *a /* length + 1 */;
+	
 	myData (): length (0), n (NULL),  x (NULL),
 		                      a (NULL), EV (NULL) {}
 ~myData ()
