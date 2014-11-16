@@ -14,7 +14,7 @@
 #define ID_FILE_PRINTS                  40003
 #define ID_FILE_EXIT                    40004
 #define ID_FILE_COLOR                   40005
-//#define IDC_LIST1																							40006
+// #define IDC_LIST1																				40006
 
 
 #define HK_FILE                          47

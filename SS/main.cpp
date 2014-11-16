@@ -3,29 +3,30 @@
 #define   UNICODE
 #define  _UNICODE
 //--
-#include "draw.h"
 #include <windows.h>
 #include <tchar.h>
+
 #include "resource.h"
+#include "draw.h"
 //--
-#pragma warning(disable:4010)
-#pragma warning(disable:4996)
+#pragma warning (disable:4010)
+#pragma warning (disable:4996)
 //--
-LRESULT CALLBACK           WndProc(HWND   hWnd, UINT messg, WPARAM wParam, LPARAM lParam);
-INT_PTR CALLBACK      AboutDlgProc(HWND   hDlg, UINT  uMsg, WPARAM wParam, LPARAM lParam);
-INT_PTR CALLBACK FloatPointDlgProc(HWND hFpDlg, UINT  uMsg, WPARAM wParam, LPARAM lParam);
-INT_PTR CALLBACK ColorShapeDlgProc(HWND hCsDlg, UINT  uMsg, WPARAM wParam, LPARAM lParam);
-void                        OnMenu(HWND   hWnd,             WPARAM wParam, 
-	                                  TCHAR *newFile, myData *vrtx, HWND hListView,
-																																			bool &mylocale, DWORD *myColor);
+LRESULT CALLBACK            WndProc (HWND   hWnd, UINT messg, WPARAM wParam, LPARAM lParam);
+INT_PTR CALLBACK       AboutDlgProc (HWND   hDlg, UINT  uMsg, WPARAM wParam, LPARAM lParam);
+INT_PTR CALLBACK  FloatPointDlgProc (HWND hFpDlg, UINT  uMsg, WPARAM wParam, LPARAM lParam);
+INT_PTR CALLBACK  ColorShapeDlgProc (HWND hCsDlg, UINT  uMsg, WPARAM wParam, LPARAM lParam);
+void                         OnMenu (HWND   hWnd,             WPARAM wParam, 
+	                                    TCHAR *newFile, myData *vrtx, HWND hListView,
+																																			  bool &mylocale, DWORD *myColor);
 //--
-INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+INT WINAPI  WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, INT nCmdShow)
 {
-	//HINSTANCE hIcon;
-	HWND hWnd;  
- MSG lpMsg;
+	// HINSTANCE hIcon;
+	HWND     hWnd;  
+ MSG      lpMsg;
  WNDCLASS wc;
-	TCHAR szClassName[] = _T("Class_Statistic_Simple");
+	TCHAR    szClassName[] = _T("Class_Statistic_Simple");
 
  // Заполняем структуру класса окна
  wc.style         = CS_HREDRAW | CS_VREDRAW;
@@ -33,125 +34,125 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
  wc.cbClsExtra    = 0;
  wc.cbWndExtra    = 0;
  wc.hInstance     = hInstance;
- wc.hIcon         = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_MYICON));
- wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
-	wc.hbrBackground = (HBRUSH)CreateSolidBrush(0xFEF5F3); // (COLOR_MENUHILIGHT);
+ wc.hIcon         = LoadIcon   (hInstance, MAKEINTRESOURCE(IDI_MYICON));
+ wc.hCursor       = LoadCursor (NULL, IDC_ARROW);
+	wc.hbrBackground = (HBRUSH)CreateSolidBrush (0xFEF5F3); // (COLOR_MENUHILIGHT);
  wc.lpszMenuName  = MAKEINTRESOURCE(IDR_MENU1);
  wc.lpszClassName = szClassName;
  
  // Регистрируем класс окна
- if(!RegisterClass(&wc))
+ if( !RegisterClass (&wc) )
  {
-		MessageBox(NULL, _T("Can't register window class"), _T("Error"), MB_OK | MB_ICONWARNING);
+		MessageBox (NULL, _T("Can't register window class"), _T("Error"), MB_OK | MB_ICONWARNING);
   return 0;
  }
 
  // Создаем основное окно приложения
- hWnd = CreateWindow( 
-       szClassName,                // Имя класса                    
-       _T("Statistic Simple"),     // Текст заголовка 
-       WS_OVERLAPPEDWINDOW|WS_SYSMENU,        // Стиль окна 
-							0,    0,                    // Позиция левого верхнего угла   
-       1024,  600,                 // Ширина и высота окна     
-       (HWND) NULL,                // Указатель на родительское окно NULL     
-       (HMENU) NULL,               // Используется меню класса окна               
-       (HINSTANCE)hInstance,       // Указатель на текущее приложение
-       NULL);						                // Передается в качестве lParam в событие WM_CREATE
+ hWnd = CreateWindow ( 
+       szClassName,                       // Имя класса                    
+       _T("Statistic Simple"),            // Текст заголовка 
+       WS_OVERLAPPEDWINDOW | WS_SYSMENU,  // Стиль окна 
+							0,    0,                           // Позиция левого верхнего угла   
+       1024,  600,                        // Ширина и высота окна     
+       (HWND) NULL,                       // Указатель на родительское окно NULL     
+       (HMENU) NULL,                      // Используется меню класса окна               
+       (HINSTANCE) hInstance,             // Указатель на текущее приложение
+       NULL );						                      // Передается в качестве lParam в событие WM_CREATE
 
- if(!hWnd) 
+ if( !hWnd ) 
  {
-		MessageBox(NULL, _T("Can't create main window"), _T("Error"), MB_OK | MB_ICONWARNING);
+		MessageBox (NULL, _T("Can't create main window"), _T("Error"), MB_OK | MB_ICONWARNING);
   return 0;
  }
 
  // Показываем наше окно
- ShowWindow(hWnd, nCmdShow); 
- UpdateWindow(hWnd);
+ ShowWindow   (hWnd, nCmdShow); 
+ UpdateWindow (hWnd);
 
  // Выполняем цикл обработки сообщений до закрытия приложения
- while (GetMessage(&lpMsg, NULL, 0, 0))  
+ while( GetMessage (&lpMsg, NULL, 0, 0) )  
  {
-		TranslateMessage(&lpMsg);
-  DispatchMessage(&lpMsg);
+		TranslateMessage (&lpMsg);
+   DispatchMessage (&lpMsg);
  }
 
  return (lpMsg.wParam);
 }
 //--
-LRESULT CALLBACK WndProc(HWND hWnd, UINT messg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK  WndProc (HWND hWnd, UINT messg, WPARAM wParam, LPARAM lParam)
 {
  PAINTSTRUCT ps;
- RECT Rect;
- HDC hdc, hCmpDC;
- HBITMAP hBmp;
+ RECT        Rect;
+ HDC         hdc, hCmpDC;
+ HBITMAP     hBmp;
 	//--
-	static double num_ch[8];
-	static myData vrtx;
-	static TCHAR newFile[1024] = {_T("inc.txt")};
-	static bool mylocale = 0;
-	static DWORD myColor[] = {0xFF2010, 0x00FF00,	0x0000FF};
+	static double  num_ch[8];
+	static myData  vrtx;
+	static TCHAR   newFile[1024] = {_T("inc.txt")};
+	static bool    mylocale      = 0;
+	static DWORD   myColor[]     = {0xFF2010, 0x00FF00,	0x0000FF};
 	//--
-	static HWND h_Chk1, h_Chk2, h_Chk3, h_Chk4, hListViewCh, hListView;
-	static int listView = 0xF1, listViewCh = 0xFC;
-	static RECT Rect1;
+	static HWND  h_Chk1, h_Chk2, h_Chk3, h_Chk4, hListViewCh, hListView;
+	static int   listView = 0xF1, listViewCh = 0xFC;
+	static RECT  Rect1;
 
  switch (messg)
  {
 		case WM_CREATE:
 		{
-			RegisterHotKey(hWnd, HK_FILE,   MOD_CONTROL, 0x4f); // 'O'
-			RegisterHotKey(hWnd, HK_README, MOD_CONTROL, 0x48); // 'H'
-			RegisterHotKey(hWnd, HK_PRINT,  MOD_CONTROL, 0x50); // 'P'
-			RegisterHotKey(hWnd, HK_COLOR,  MOD_CONTROL, 0x4c); // 'L'
-			RegisterHotKey(hWnd, HK_EXIT,   NULL, 0x1B);        // 'Esc'
+			RegisterHotKey (hWnd, HK_FILE,   MOD_CONTROL, 0x4f); // 'O'
+			RegisterHotKey (hWnd, HK_README, MOD_CONTROL, 0x48); // 'H'
+			RegisterHotKey (hWnd, HK_PRINT,  MOD_CONTROL, 0x50); // 'P'
+			RegisterHotKey (hWnd, HK_COLOR,  MOD_CONTROL, 0x4c); // 'L'
+			RegisterHotKey (hWnd, HK_EXIT,   NULL, 0x1B);        // 'Esc'
 
-			GetClientRect(hWnd, &Rect);
-			h_Chk1 = CreateWindow(TEXT("button"), TEXT("Poligon"),
+			GetClientRect (hWnd, &Rect);
+			h_Chk1 = CreateWindow (TEXT("button"), TEXT("Poligon"),
                  WS_VISIBLE | WS_CHILD | BS_CHECKBOX,
                  Rect.right - 550, 
-																	300  + 10, 
+																	300 + 10, 
 																	200, 
 																	25,
-																	hWnd, (HMENU)0xCB01, (HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE), NULL);
-			h_Chk2 = CreateWindow(TEXT("button"), TEXT("Histogram"),
+																	hWnd, (HMENU)0xCB01, (HINSTANCE) GetWindowLong (hWnd, GWL_HINSTANCE), NULL);
+			h_Chk2 = CreateWindow (TEXT("button"), TEXT("Histogram"),
                  WS_VISIBLE | WS_CHILD | BS_CHECKBOX,
                  Rect.right - 550, 
-																	300  + 35, 
+																	300 + 35, 
 																	200, 
 																	25,
-																	hWnd, (HMENU)0xCB02, (HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE), NULL);\
-			h_Chk3 = CreateWindow(TEXT("button"), TEXT("Distribution Function"),
+																	hWnd, (HMENU)0xCB02, (HINSTANCE) GetWindowLong (hWnd, GWL_HINSTANCE), NULL);
+			h_Chk3 = CreateWindow (TEXT("button"), TEXT("Distribution Function"),
                  WS_VISIBLE | WS_CHILD | BS_CHECKBOX,
                  Rect.right - 550, 
-																	300  + 60, 
+																	300 + 60, 
 																	200, 
 																	25,
-																	hWnd, (HMENU)0xCB03, (HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE), NULL);
+																	hWnd, (HMENU)0xCB03, (HINSTANCE) GetWindowLong (hWnd, GWL_HINSTANCE), NULL);
 			h_Chk4 = CreateWindow(TEXT("button"), TEXT("Show marks"),
                  WS_VISIBLE | WS_CHILD | BS_CHECKBOX,
                  Rect.right - 550, 
-																	300  + 100, 
+																	300 + 100, 
 																	200, 
 																	25,
-																	hWnd, (HMENU)0xCB04, (HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE), NULL);
-	   CheckDlgButton(hWnd, 0xCB01, BST_UNCHECKED);
-				CheckDlgButton(hWnd, 0xCB02, BST_UNCHECKED);
-				CheckDlgButton(hWnd, 0xCB03, BST_UNCHECKED);
-				CheckDlgButton(hWnd, 0xCB04, BST_CHECKED);
+																	hWnd, (HMENU)0xCB04, (HINSTANCE) GetWindowLong (hWnd, GWL_HINSTANCE), NULL);
+	   CheckDlgButton (hWnd, 0xCB01, BST_UNCHECKED);
+				CheckDlgButton (hWnd, 0xCB02, BST_UNCHECKED);
+				CheckDlgButton (hWnd, 0xCB03, BST_UNCHECKED);
+				CheckDlgButton (hWnd, 0xCB04, BST_CHECKED);
 				
-				hListViewCh = CreateWindow(
+				hListViewCh = CreateWindow (
 					WC_LISTVIEW, 
 					_T("MyList"),
-					LVS_REPORT|WS_CHILD|WS_VISIBLE,
+					LVS_REPORT | WS_CHILD | WS_VISIBLE,
 					Rect.right - 265,
 					312,
 			 	250,
 					200,
-					hWnd, (HMENU)listViewCh, (HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE), NULL);
+					hWnd, (HMENU)listViewCh, (HINSTANCE) GetWindowLong (hWnd, GWL_HINSTANCE), NULL);
 				//--
 				LVCOLUMN lvColumn = {0};
-				lvColumn.mask = LVCF_FMT|LVCF_WIDTH|LVCF_TEXT;
-				lvColumn.fmt = LVCFMT_CENTER;
+				lvColumn.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT;
+				lvColumn.fmt  = LVCFMT_CENTER;
 				lvColumn.pszText = _T("№");
 				lvColumn.cx = 30;
 				ListView_InsertColumn(hListViewCh, 0, &lvColumn);
