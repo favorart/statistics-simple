@@ -1,4 +1,14 @@
-statistics_simple
+Statistics Simple
 =================
 
-Program creates an interval variational series from collection of numbers, It calculates central number, relational frequencies and other characteristics in each interval. It draws a poligon, a histogram and an experiential distribution function.
+The program calculates from the given collection of numbers (.csv file):
+* interval variational series,
+* absolute and relational frequencies,
+* central number
+and other numerical characteristics.
+
+
+The program draws the data representation:
+* poligon,
+* histogram,
+* experiential distribution function.
